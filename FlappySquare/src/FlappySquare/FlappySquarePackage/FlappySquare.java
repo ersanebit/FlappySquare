@@ -1,4 +1,4 @@
-package falppyBird;
+package FlappySquarePackage;
 
 import oracle.jrockit.jfr.JFR;
 import org.w3c.dom.css.Rect;
@@ -18,11 +18,11 @@ import static jdk.nashorn.internal.runtime.Debug.id;
  */
 
 
-public class FlappyBird implements ActionListener, MouseListener, KeyListener {
+public class FlappySquare implements ActionListener, MouseListener, KeyListener {
 
-    public static FlappyBird flappyBird;
+    public static FlappySquare flappySquare;
 
-    //latime, inaltime fereastra de joc
+    //width and height of the window
     public final int WIDTH=1200, HEIGHT=800;
 
     public Renderer renderer;
@@ -37,17 +37,18 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 
     public boolean gameOver, started;
 
-    public FlappyBird(){
+    public FlappySquare(){
 
         JFrame jframe = new JFrame();
-        Timer timer = new Timer(20, this);  //viteza jocului
+        //Game speed
+        Timer timer = new Timer(20, this);
 
 
         rand = new Random();
         renderer = new Renderer();
 
         jframe.add(renderer);
-        jframe.setTitle("BROOO AM FACUT PRIMUL MEU JOC, BY Ers BIT");
+        jframe.setTitle("My first game in Java!");
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setSize(WIDTH, HEIGHT);
         jframe.addMouseListener(this);
@@ -99,7 +100,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        // ?
+
         ticks++;
 
         if(started) {
@@ -116,7 +117,8 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
             }
 
             if (ticks % 2 == 0 && yMotion < 15) {
-                yMotion += 2; //sa se duca cu 2 pixeli in jos in continuu
+                // going down continuosly by 2 pixels
+                yMotion += 2;
             }
 
             for (int i = 0; i < columns.size(); i++) {
@@ -136,7 +138,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
             for (Rectangle column : columns) {
                 if(column.y == 0 && bird.x + bird.width /2 > column.x + column.width / 2 - 10 && bird.x + bird.width/2 < column.x + column.width /2 + 10)
                 {
-                 score++;
+                    score++;
 
                 }
                 if (column.intersects(bird)) {
@@ -162,7 +164,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
         renderer.repaint();
     }
 
-    // add
+
     public void addColumn(boolean start){
         int space = 300;
         int width = 100;
@@ -170,10 +172,10 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 
         if(start){
 
-        //scadem 120 ca sa fie la limita ierbii din joc daca te uiti la linia 82
-        columns.add(new Rectangle(WIDTH + width + columns.size() * 300, HEIGHT - height -120, width, height));
-        columns.add(new Rectangle(WIDTH + width + (columns.size() -1) * 300,0,width,HEIGHT-height- space));
-    }else{
+
+            columns.add(new Rectangle(WIDTH + width + columns.size() * 300, HEIGHT - height -120, width, height));
+            columns.add(new Rectangle(WIDTH + width + (columns.size() -1) * 300,0,width,HEIGHT-height- space));
+        }else{
             columns.add(new Rectangle(columns.get(columns.size() - 1).x + 600, HEIGHT - height -120, width, height));
             columns.add(new Rectangle(columns.get(columns.size() - 1).x,0,width,HEIGHT-height- space));
         }
@@ -186,10 +188,10 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
     }
 
     public void repaint(Graphics g){
-       g.setColor(Color.black);
-       g.fillRect(0,0,WIDTH,HEIGHT);
+        g.setColor(Color.black);
+        g.fillRect(0,0,WIDTH,HEIGHT);
 
-       g.setColor(Color.orange);
+        g.setColor(Color.orange);
         g.fillRect(0, HEIGHT - 120, WIDTH, 120);
 
         g.setColor(Color.green);
@@ -197,36 +199,38 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 
 
 
-       //g with bird`s width, height etc from line 30, where bird = rectangle
-       g.setColor(Color.red);
-       g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        //g with bird`s width, height etc from line 30, where bird = rectangle
+        g.setColor(Color.red);
+        g.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-       for(Rectangle column: columns){
-           paintColumn(g,column);
-       }
+        for(Rectangle column: columns){
+            paintColumn(g,column);
+        }
 
-       //scris game over cu alb
-           g.setColor(Color.white);
-           g.setFont(new Font("Arial", 1, 100));
+        //"game over" written in white
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial", 1, 100));
 
 
         if(!started){
             g.drawString("Click to start!", 75, HEIGHT /2 - 50);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+            g.drawString("Press spacebar or click to jump!", 100, HEIGHT /2 + 100);
         }
 
-           if(gameOver){
-               g.drawString("Game over", 300, HEIGHT /2 - 50);
-           }
+        if(gameOver){
+            g.drawString("Game over", 300, HEIGHT /2 - 50);
+        }
 
-           if(!gameOver && started){
-               g.drawString(String.valueOf(score), WIDTH/ 2 -25, 100);
-           }
-       }
+        if(!gameOver && started){
+            g.drawString(String.valueOf(score), WIDTH/ 2 -25, 100);
+        }
+    }
 
 
 
     public static void main(String[] args) {
-        flappyBird = new FlappyBird();
+        flappySquare = new FlappySquare();
     }
 
 
@@ -267,8 +271,8 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-      if(e.getKeyCode()== KeyEvent.VK_SPACE){
-          jump();
-      }
+        if(e.getKeyCode()== KeyEvent.VK_SPACE){
+            jump();
+        }
     }
 }
